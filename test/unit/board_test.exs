@@ -29,11 +29,11 @@ defmodule GameOfLifeWeb.BoardTest do
       assert false == Board.populated?(new_board, {4, 4})
     end
 
-    @tag :wip
     test "should populate figure" do
       Board.new(500, 300)
-      |> Board.populate_figure(Figure.spaceship(), offset_x: 2, offset_y: 2)
-      |> IO.inspect()
+      |> Board.populate_figure(Figure.spaceship(), offset_x: 100, offset_y: 100)
+      |> Board.iterate()
+      |> Board.iterate()
     end
   end
 end

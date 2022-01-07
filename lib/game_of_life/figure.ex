@@ -15,6 +15,24 @@ defmodule GameOfLife.Figure do
     |> List.flatten()
   end
 
+  def simple() do
+    """
+    .O.
+    ..O
+    OOO
+    """
+    |> to_cells()
+  end
+
+  def acorn() do
+    """
+    .O.....
+    ...O...
+    OO..OOO
+    """
+    |> to_cells()
+  end
+
   def figure101() do
     """
     ....OO......OO....

@@ -4,7 +4,7 @@ defmodule GameOfLife.Board do
   defstruct [:cols, :rows, :cells]
 
   def new(cols, rows) do
-    cells = for x <- 1..cols, y <- 1..rows, do: {x, y, false}
+    cells = for x <- 1..cols, y <- 1..rows, into: %{}, do: {{x, y}, false}
 
     %Board{cols: cols, rows: rows, cells: cells}
   end
@@ -23,34 +23,28 @@ defmodule GameOfLife.Board do
   def populate_cell(%Board{} = board, position), do: update_cell(board, position, true)
 
   def update_cell(%Board{cells: cells} = board, {x, y}, populated \\ true) do
-    new_cells =
-      Enum.map(cells, fn
-        {^x, ^y, _} -> {x, y, populated}
-        item -> item
-      end)
+    new_cells = Map.put(cells, {x, y}, populated)
 
     %Board{board | cells: new_cells}
   end
 
   def populated?(%Board{cells: cells}, {x, y}) do
-    Enum.member?(cells, {x, y, true})
+    Map.get(cells, {x, y}, false)
   end
 
   def iterate(%Board{} = board) do
-    new_cells =
-      board.cells
-      |> Enum.map(fn cell -> iterate_cell(board, cell) end)
+    new_cells = for cell <- board.cells, into: %{}, do: iterate_cell(board, cell)
 
     %Board{board | cells: new_cells}
   end
 
-  def iterate_cell(%Board{} = board, {x, y, is_populated}) do
+  def iterate_cell(%Board{} = board, {{x, y}, is_populated}) do
     becomes_populated =
       board
       |> get_neighbors({x, y})
       |> becomes_populated?(is_populated)
 
-    {x, y, becomes_populated}
+    {{x, y}, becomes_populated}
   end
 
   defp becomes_populated?(2, true), do: true

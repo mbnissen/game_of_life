@@ -25,8 +25,8 @@ defmodule GameOfLifeWeb.PageLive do
     if connected?(socket), do: Process.send_after(self(), :update, @speed)
 
     board =
-      Board.new(500, 300)
-      |> Board.populate_figure(Figure.spaceship(), offset_x: 5, offset_y: 1)
+      Board.new(200, 200)
+      |> Board.populate_figure(Figure.spaceship(), offset_x: 100, offset_y: 100)
 
     {:ok,
      socket
