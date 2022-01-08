@@ -1,10 +1,11 @@
 defmodule GameOfLifeWeb.PageLive do
   use GameOfLifeWeb, :live_view
 
+  alias GameOfLife.GameServer
   alias GameOfLife.Board
   alias GameOfLife.Figure
 
-  @speed 100
+  @speed 1000
 
   @impl true
   def render(assigns) do
@@ -24,9 +25,9 @@ defmodule GameOfLifeWeb.PageLive do
   def mount(_params, _session, socket) do
     if connected?(socket), do: Process.send_after(self(), :update, @speed)
 
-    board =
-      Board.new(200, 200)
-      |> Board.populate_figure(Figure.spaceship(), offset_x: 100, offset_y: 100)
+    GameServer.start(20, 20)
+
+    board = GameServer.populate_figure(Figure.simple(), offset_x: 0, offset_y: 0)
 
     {:ok,
      socket
@@ -34,8 +35,8 @@ defmodule GameOfLifeWeb.PageLive do
   end
 
   @impl true
-  def handle_info(:update, %{assigns: %{board: board}} = socket) do
+  def handle_info(:update, socket) do
     Process.send_after(self(), :update, @speed)
-    {:noreply, assign(socket, :board, Board.iterate(board))}
+    {:noreply, assign(socket, :board, GameServer.iterate())}
   end
 end
