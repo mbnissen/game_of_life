@@ -29,10 +29,15 @@ defmodule GameOfLifeWeb.BoardTest do
       assert false == Board.populated?(new_board, {4, 4})
     end
 
-    test "should populate figure" do
-      Board.new(500, 300)
-      |> Board.populate_figure(Figure.spaceship(), offset_x: 100, offset_y: 100)
+    test "should populate figure and iterate (simple)" do
+      Board.new(5, 5)
+      |> Board.populate_figure(Figure.simple())
       |> Board.iterate()
+    end
+
+    test "should populate figure and iterate (large)" do
+      Board.new(400, 300)
+      |> Board.populate_figure(Figure.spaceship(), offset_x: 0, offset_y: 0)
       |> Board.iterate()
     end
   end
