@@ -12,7 +12,7 @@ defmodule GameOfLifeWeb.PageLive do
     <%= for y <- 1..@board.rows do %>
       <div class="flex flex-row">
         <%= for x <- 1..@board.cols do %>
-          <div class={Board.populated?(@board, {x,y}) && "bg-black p-2 border-2" || "p-2 border-2"}>
+          <div class={Board.populated?(@board, {x,y}) && "bg-black pl-1 pt-1 border" || "pl-1 pt-1 border"}>
           </div>
         <% end %>
       </div>
