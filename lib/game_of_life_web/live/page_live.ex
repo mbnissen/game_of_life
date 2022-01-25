@@ -9,10 +9,10 @@ defmodule GameOfLifeWeb.PageLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <%= for y <- 1..@board.rows do %>
+    <%= for y <- 1..assigns.board.rows do %>
       <div class="flex flex-row">
-        <%= for x <- 1..@board.cols do %>
-          <div class={Board.populated?(@board, {x,y}) && "bg-black pl-1 pt-1 border" || "pl-1 pt-1 border"}>
+        <%= for x <- 1..assigns.board.cols do %>
+          <div class={Board.populated?(assigns.board, {x,y}) && "bg-black pl-2 pt-2 border" || "pl-2 pt-2 border"}>
           </div>
         <% end %>
       </div>
